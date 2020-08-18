@@ -1,0 +1,17 @@
+plugins {
+    id 'application'
+}
+
+application {
+	mainClassName 'com.yeafern.shear.Shear'
+}
+
+repositories {
+    jcenter()
+}
+
+dependencies {
+	compile group: 'org.ow2.asm', name: 'asm', version: '9.0-beta'
+	compile group: 'org.ow2.asm', name: 'asm-commons', version: '9.0-beta'
+	compile group: 'org.ow2.asm', name: 'asm-tree', version: '9.0-beta'
+}
