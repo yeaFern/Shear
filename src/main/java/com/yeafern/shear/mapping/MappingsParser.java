@@ -44,7 +44,9 @@ public class MappingsParser {
 	// should probably devise some test cases at some point.
 	public static Mappings parse(String file) {
 		try {
-			Map<String, String> classMap = new HashMap<String, String>();
+			Map<String, ClassMapping> classMap = new HashMap<String, ClassMapping>();
+
+			ClassMapping currentClass = null;
 
 			BufferedReader reader = new BufferedReader(new FileReader(file));
 			String line = null;
@@ -61,13 +63,28 @@ public class MappingsParser {
 					String original = classLineMatcher.group(1);
 					String obfuscated = classLineMatcher.group(3);
 
-					classMap.put(renameClass(obfuscated), renameClass(original));
+					currentClass = new ClassMapping(renameClass(original));
+					classMap.put(renameClass(obfuscated), currentClass);
 				} else if(fieldLineMatcher.matches()) {
 					String original = fieldLineMatcher.group(4);
 					String obfuscated = fieldLineMatcher.group(5);
+
+					if(currentClass != null) {
+						currentClass.addField(obfuscated, original);
+					} else {
+						reader.close();
+						throw new RuntimeException("Field before class");
+					}
 				} else if(methodLineMatcher.matches()) {
 					String original = methodLineMatcher.group(5);
 					String obfuscated = methodLineMatcher.group(6);
+
+					if(currentClass != null) {
+						currentClass.addMethod(obfuscated, original);
+					} else {
+						reader.close();
+						throw new RuntimeException("Method before class");
+					}
 				} else {
 					reader.close();
 					throw new RuntimeException("Failed to parse mapping file at line " + currentLine);

@@ -2,6 +2,7 @@ package com.yeafern.shear.remap;
 
 import org.objectweb.asm.commons.Remapper;
 
+import com.yeafern.shear.mapping.ClassMapping;
 import com.yeafern.shear.mapping.Mappings;
 
 public class ShearRemapper extends Remapper {
@@ -14,22 +15,46 @@ public class ShearRemapper extends Remapper {
 	
 	@Override
 	public String map(String internalName) {
-		String mapped = mappings.mapClass(internalName);
+		ClassMapping mapped = mappings.getClass(internalName);
 		
-		if(mapped == null) {				
-			mapped = super.map(internalName);
+		if(mapped == null) {
+			return super.map(internalName);
+		}
+
+		return mapped.getName();
+	}
+
+	@Override
+	public String mapMethodName(String owner, String name, String descriptor) {
+		ClassMapping owningClass = mappings.getClass(owner);
+
+		if(owningClass == null) {
+			return super.mapMethodName(owner, name, descriptor);
+		}
+
+		String mapped = owningClass.mapMethod(name);
+
+		if(mapped == null) {
+			return super.mapMethodName(owner, name, descriptor);
 		}
 
 		return mapped;
 	}
 
 	@Override
-	public String mapMethodName(String owner, String name, String descriptor) {
-		return super.mapMethodName(owner, name, descriptor);
-	}
-
-	@Override
 	public String mapFieldName(String owner, String name, String descriptor) {
-		return super.mapFieldName(owner, name, descriptor);
+		ClassMapping owningClass = mappings.getClass(owner);
+
+		if(owningClass == null) {
+			return super.mapFieldName(owner, name, descriptor);
+		}
+
+		String mapped = owningClass.mapField(name);
+
+		if(mapped == null) {
+			return super.mapFieldName(owner, name, descriptor);
+		}
+
+		return mapped;
 	}
 }

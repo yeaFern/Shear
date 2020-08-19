@@ -4,13 +4,13 @@ import java.util.Map;
 
 public class Mappings {
 
-	private final Map<String, String> classes;
+	private final Map<String, ClassMapping> classes;
 
-	public Mappings(final Map<String, String> classes) {
+	public Mappings(final Map<String, ClassMapping> classes) {
 		this.classes = classes;
 	}
 
-	public String mapClass(String name) {
+	public ClassMapping getClass(String name) {
 		return classes.get(name);
 	}
 }
