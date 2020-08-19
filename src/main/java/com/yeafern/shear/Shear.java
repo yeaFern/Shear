@@ -58,7 +58,7 @@ public class Shear {
 			} catch(IOException e) {
 				e.printStackTrace();
 			}
-			System.out.print("\r" + Shear.currentFile + "/" + Shear.totalFiles);
+			//System.out.print("\r" + Shear.currentFile + "/" + Shear.totalFiles);
 		});
 		
 		System.out.println("\nDone.");

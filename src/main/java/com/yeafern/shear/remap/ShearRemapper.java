@@ -22,4 +22,14 @@ public class ShearRemapper extends Remapper {
 
 		return mapped;
 	}
+
+	@Override
+	public String mapMethodName(String owner, String name, String descriptor) {
+		return super.mapMethodName(owner, name, descriptor);
+	}
+
+	@Override
+	public String mapFieldName(String owner, String name, String descriptor) {
+		return super.mapFieldName(owner, name, descriptor);
+	}
 }
