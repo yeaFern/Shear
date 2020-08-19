@@ -8,6 +8,10 @@ application {
 
 repositories {
     jcenter()
+
+    flatDir {
+        dirs 'libs'
+    }
 }
 
 dependencies {
@@ -16,4 +20,5 @@ dependencies {
 	compile group: 'org.ow2.asm', name: 'asm-tree', version: '9.0-beta'
 
 	implementation 'com.google.code.gson:gson:2.8.6'
+    implementation files('libs/fernflower.jar')
 }

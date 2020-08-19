@@ -1,6 +1,9 @@
 package com.yeafern.shear;
 
+import java.io.File;
 import java.io.IOException;
+
+import org.jetbrains.java.decompiler.main.decompiler.ConsoleDecompiler;
 
 import com.yeafern.shear.api.VersionInfo;
 import com.yeafern.shear.api.VersionManifest;
@@ -40,5 +43,16 @@ public class Main {
 
 		Shear shear = new Shear(mappingsFileName, serverFileName, outputFilename);
 		shear.run();
+
+		File outputDirectory = new File("decomp");
+		if(!outputDirectory.isDirectory()) {
+			outputDirectory.mkdirs();
+		}
+
+		String fernflowerArgs[] = new String[] {
+			outputFilename,
+			outputDirectory.getPath()
+		};
+		ConsoleDecompiler.main(fernflowerArgs);
 	}
 }
